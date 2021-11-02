@@ -53,8 +53,8 @@
                 </div>
             </div>
             <div class="row mt-4">
-                <div class="col-lg-4">
-                    <h3 class="text-center text-md-left">By Manufacturer</h3>
+                <div class="col-lg-6">
+                    <h3 class="text-center text-md-left">By Vaccine Manufacturer</h3>
                 </div>
             </div>
             <div class="row justify-content-center mt-4">
@@ -63,10 +63,43 @@
                         <thead>
                             <tr>
                                 <th scope="col">Manufacturer</th>
-                                <th scope="col"># Vaccines</th>
+                                <th scope="col">No. of Vaccines</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="manufacturer-table-body">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <section id="age-status" class="mt-5">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2 class="text-center text-md-left">Fully Vaccinated per Age Group</h2>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-3 ml-auto"> 
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">View as:</button>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item">Number</div>
+                            <div class="dropdown-item">Percentage</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-3">
+                <div class="col-md-6">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Age Group</th>
+                                <th scope="col">No. of Vaccinated</th>
+                            </tr>
+                        </thead>
+                        <tbody id="age-table-body">
 
                         </tbody>
                     </table>
