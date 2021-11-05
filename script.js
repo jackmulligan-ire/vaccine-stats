@@ -31,23 +31,27 @@ function get_latest_week(obj_array) {
     };
 
     function get_manufacturer_table(lw_attributes) {
-        // CITATION: https://stackoverflow.com/questions/39336556/how-can-i-slice-an-object-in-javascript
+        // Define an array of manu_keys
+        const manu_keys = ['Moderna', 'Pfizer', 'Janssen', 'AstraZeneca'];
+        // CITATION: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#enumerate_the_properties_of_an_object
         let lw_keys = Object.keys(lw_attributes);
-        let manu_keys = lw_keys.slice(6,10);
-        for (i = 0; i < manu_keys.length; i++) {
-            // CITATION: https://www.theodinproject.com/paths/foundations/courses/foundations/lessons/dom-manipulation
-            let table_row = document.createElement('tr');
-            let name_cell = document.createElement('td');
-            let number_cell = document.createElement('td');
-            name_cell.innerHTML = manu_keys[i];
-            number_cell.innerHTML = lw_attributes[manu_keys[i]];
-            table_row.appendChild(name_cell)
-            table_row.appendChild(number_cell)
-            manu_table_body.appendChild(table_row)
+        // Loop cond = lw_keys.length
+        for (i = 0; i < lw_keys.length; i++) {
+            // If lw_keys at i in manu_names
+            if (manu_keys.includes(lw_keys[i])) {
+                // CITATION: https://www.theodinproject.com/paths/foundations/courses/foundations/lessons/dom-manipulation
+                let table_row = document.createElement('tr');
+                let name_cell = document.createElement('td');
+                let number_cell = document.createElement('td');
+                name_cell.innerHTML = lw_keys[i];
+                number_cell.innerHTML = lw_attributes[lw_keys[i]];
+                table_row.appendChild(name_cell)
+                table_row.appendChild(number_cell)
+                manu_table_body.appendChild(table_row)
+            }
         }
     }
     let lw_attributes = obj_array[obj_array.length - 1].attributes;
-    //let lw_attributes = lw_obj.attributes;
     get_total_vaccinated(lw_attributes)
     get_weekly_vaccinated(lw_attributes)
     get_manufacturer_table(lw_attributes)
