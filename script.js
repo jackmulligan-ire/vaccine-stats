@@ -31,13 +31,11 @@ function get_latest_week(obj_array) {
     };
 
     function get_manufacturer_table(lw_attributes) {
-        // Define an array of manu_keys
         const manu_keys = ['Moderna', 'Pfizer', 'Janssen', 'AstraZeneca'];
         // CITATION: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#enumerate_the_properties_of_an_object
         let lw_keys = Object.keys(lw_attributes);
-        // Loop cond = lw_keys.length
         for (i = 0; i < lw_keys.length; i++) {
-            // If lw_keys at i in manu_names
+            // CITATION: https://www.w3schools.com/jsref/jsref_includes_array.asp
             if (manu_keys.includes(lw_keys[i])) {
                 // CITATION: https://www.theodinproject.com/paths/foundations/courses/foundations/lessons/dom-manipulation
                 let table_row = document.createElement('tr');
