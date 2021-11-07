@@ -1,6 +1,7 @@
 const total_vaccinated_elem = document.getElementById('total-vaccines');
 const weekly_vaccinated_elem = document.getElementById('weekly-vaccines');
 const manu_table_body = document.getElementById('manufacturer-table-body');
+const age_table_rows = document.querySelectorAll('.age-row');
 
 let xmlhttp = new XMLHttpRequest();
 let url = "https://services-eu1.arcgis.com/z6bHNio59iTqqSUY/arcgis/rest/services/COVID19_Weekly_Vaccination_Figures/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
@@ -24,12 +25,11 @@ function get_latest_week(obj_array) {
         lw_attributes.FullyCum_80_ + lw_attributes.FullyCum_NA;
         
         total_vaccinated_elem.textContent = total_vaccinated;
-    };
+    }
     function get_weekly_vaccinated(lw_attributes) {
         let weekly_vaccinated = lw_attributes.TotalweeklyVaccines;
         weekly_vaccinated_elem.textContent = weekly_vaccinated;
-    };
-
+    }
     function get_manufacturer_table(lw_attributes) {
         const manu_keys = ['Moderna', 'Pfizer', 'Janssen', 'AstraZeneca'];
         // CITATION: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#enumerate_the_properties_of_an_object
@@ -49,8 +49,20 @@ function get_latest_week(obj_array) {
             }
         }
     }
+    function get_total_age_stats(lw_attributes) {
+        const total_age_keys = ["FullyCum_Age10to19", "FullyCum_Age20to29", "FullyCum_Age30to39", "FullyCum_Age40to49", 
+        "FullyCum_Age50to59", "FullyCum_Age60to69","FullyCum_Age70to79", "FullyCum_80_"];
+        
+        for (i=0; i < total_age_keys.length; i++) {
+            let number_td = document.createElement('td');
+            number_td.innerHTML = lw_attributes[total_age_keys[i]];
+            age_table_rows[i].appendChild(number_td)
+        }
+    }
+
     let lw_attributes = obj_array[obj_array.length - 1].attributes;
     get_total_vaccinated(lw_attributes)
     get_weekly_vaccinated(lw_attributes)
     get_manufacturer_table(lw_attributes)
+    get_total_age_stats(lw_attributes)
 };
