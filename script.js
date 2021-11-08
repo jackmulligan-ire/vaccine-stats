@@ -2,7 +2,6 @@ const total_vaccinated_elem = document.getElementById('total-vaccines');
 const weekly_vaccinated_elem = document.getElementById('weekly-vaccines');
 const manu_table_body = document.getElementById('manufacturer-table-body');
 const ageDataCells = document.querySelectorAll('.age-data');
-// Get the elem w/ ID of “percentage-item”, let this be the percentageItem
 const percentageItem = document.getElementById('percentage-item');
 const numberItem = document.getElementById('number-item');
 
@@ -22,8 +21,6 @@ xmlhttp.onreadystatechange = () => {
 xmlhttp.open("GET", url, true)
 xmlhttp.send()
 
-//Add an event listener to the percentage item, for click w/ a callback fn
-//CB: An anon fn, containing getPercAgeStats called w/ selected_weeks_attributes
 percentageItem.addEventListener('click', () => getPercAgeStats(selected_week_attributes))
 numberItem.addEventListener('click', () => get_total_age_stats(selected_week_attributes))
 
