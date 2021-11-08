@@ -1,7 +1,10 @@
 const total_vaccinated_elem = document.getElementById('total-vaccines');
 const weekly_vaccinated_elem = document.getElementById('weekly-vaccines');
 const manu_table_body = document.getElementById('manufacturer-table-body');
-const age_table_rows = document.querySelectorAll('.age-row');
+const ageDataCells = document.querySelectorAll('.age-data');
+// Get the elem w/ ID of “percentage-item”, let this be the percentageItem
+const percentageItem = document.getElementById('percentage-item');
+const numberItem = document.getElementById('number-item');
 
 let data_features, selected_week_attributes;
 let xmlhttp = new XMLHttpRequest();
@@ -19,16 +22,28 @@ xmlhttp.onreadystatechange = () => {
 xmlhttp.open("GET", url, true)
 xmlhttp.send()
 
+//Add an event listener to the percentage item, for click w/ a callback fn
+//CB: An anon fn, containing getPercAgeStats called w/ selected_weeks_attributes
+percentageItem.addEventListener('click', () => getPercAgeStats(selected_week_attributes))
+numberItem.addEventListener('click', () => get_total_age_stats(selected_week_attributes))
+
 function get_total_age_stats(attributes) {
     const total_age_keys = ["FullyCum_Age10to19", "FullyCum_Age20to29", "FullyCum_Age30to39", "FullyCum_Age40to49", 
     "FullyCum_Age50to59", "FullyCum_Age60to69","FullyCum_Age70to79", "FullyCum_80_"];
     
-    for (i=0; i < total_age_keys.length; i++) {
-        let number_td = document.createElement('td');
-        number_td.innerHTML = attributes[total_age_keys[i]];
-        age_table_rows[i].appendChild(number_td)
+    for (i=0; i < total_age_keys.length; i++) {ageDataCells[i].innerHTML = attributes[total_age_keys[i]];}
+}
+
+function getPercAgeStats(attributes) {
+    const agePercKeys = ["FullyPer_Age10to19", "FullyPer_Age20to29", "FullyPer_Age30to39", "FullyPer_Age40to49",
+    "FullyPer_Age50to59", "FullyPer_Age60to69", "FullyPer_Age70to79", "FullyPer_80_"];
+    
+    for (i=0; i < agePercKeys.length; i++) {
+        let percValue = (attributes[agePercKeys[i]] * 100).toFixed(2);
+        ageDataCells[i].innerHTML = percValue;
     }
 }
+
 function generate_page_data(week_attributes) {
     function get_total_vaccinated(attributes) {
         let total_vaccinated = attributes.FullyCum_Age10to19 + 
