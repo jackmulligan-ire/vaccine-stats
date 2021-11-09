@@ -4,6 +4,7 @@ const manuTableBody = document.getElementById('manufacturer-table-body');
 const ageDataCells = document.querySelectorAll('.age-data');
 const percentageItem = document.getElementById('percentage-item');
 const numberItem = document.getElementById('number-item');
+const weekMenuElem = document.getElementById('week-menu');
 
 let dataFeatures, selectedWeekAttributes;
 let xmlhttp = new XMLHttpRequest();
@@ -13,9 +14,10 @@ xmlhttp.onreadystatechange = () => {
     if (xmlhttp.readyState === 4 && xmlhttp.status == 200) {
         let myJSON = JSON.parse(xmlhttp.responseText);
         dataFeatures = myJSON.features;
-        let currentWeekIndex = dataFeatures.length-1
-        selectedWeekAttributes = dataFeatures[currentWeekIndex].attributes
-        generatePageData(selectedWeekAttributes);
+        let currentWeekIndex = dataFeatures.length-1;
+        populateWeeks(currentWeekIndex)
+        selectedWeekAttributes = dataFeatures[currentWeekIndex].attributes;
+        generatePageData(selectedWeekAttributes)
     }
 };
 xmlhttp.open("GET", url, true)
@@ -38,6 +40,15 @@ function getPercAgeStats(attributes) {
     for (i=0; i < agePercKeys.length; i++) {
         let percValue = (attributes[agePercKeys[i]] * 100).toFixed(2);
         ageDataCells[i].innerHTML = percValue;
+    }
+}
+
+function populateWeeks(currentWeek) {
+    for (i=1; i <= currentWeek; i++) {
+        let itemElem = document.createElement('div');
+        itemElem.classList.add('dropdown-item')
+        itemElem.textContent = i;
+        weekMenuElem.appendChild(itemElem)
     }
 }
 
@@ -79,3 +90,4 @@ function generatePageData(weekAttributes) {
     getManufacturerTable(weekAttributes)
     getTotalAgeStats(weekAttributes)
 };
+
