@@ -9,15 +9,15 @@ xmlhttp.onreadystatechange = () => {
     if (xmlhttp.readyState === 4 && xmlhttp.status == 200) {
         let myJSON = JSON.parse(xmlhttp.responseText);
         dataFeatures = myJSON.features;
-        let currentWeekIndex = dataFeatures.length-1;
-        populateWeeks(currentWeekIndex)
-        generatePageData(currentWeekIndex)
+        let currentWeek = dataFeatures.length-1;
+        populateWeeks(currentWeek)
+        generatePageData(currentWeek)
     }
 };
 xmlhttp.open("GET", url, true)
 xmlhttp.send()
 
-// CITATION: https://javascript.info/arrow-functions-basics
+// CITATION: https://javascript.info/arrow-functions-basics, https://www.theodinproject.com/paths/foundations/courses/foundations/lessons/dom-manipulation
 percentageItem.addEventListener('click', () => getPercAgeStats(selectedWeekAttributes))
 numberItem.addEventListener('click', () => getTotalAgeStats(selectedWeekAttributes))
 
@@ -52,7 +52,7 @@ function populateWeeks(currentWeek) {
     }
 }
 
-function generatePageData(weekIndex) {
+function generatePageData(week) {
     function getTotalVaccinated(attributes) {
         const totalVaccinatedElem = document.getElementById('total-vaccines');
         let totalVaccinated = attributes.FullyCum_Age10to19 + attributes.FullyCum_Age20to29 + 
@@ -73,7 +73,7 @@ function generatePageData(weekIndex) {
 
         for (let i=0; i < manuKeys.length; i++) {manuDataCells[i].innerHTML = attributes[manuKeys[i]];}
     }
-    selectedWeekAttributes = dataFeatures[weekIndex].attributes;
+    selectedWeekAttributes = dataFeatures[week].attributes;
     getTotalVaccinated(selectedWeekAttributes)
     getWeeklyVaccinated(selectedWeekAttributes)
     getManufacturerTable(selectedWeekAttributes)
