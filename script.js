@@ -66,7 +66,7 @@ function populateWeeks(currentWeek) {
 }
 
 function populateCounties(features) {    
-    function writeDropdowns(menuElem) {
+    function generateDropdowns(menuElem) {
         for (let i=0; i < 26; i++) {  // i set manually to 26 due to county data sometimes being doubled up by HSE
             let countyNameElem = document.createElement('div');
             countyNameElem.classList.add('dropdown-item');
@@ -75,7 +75,7 @@ function populateCounties(features) {
         }
     }   
     const countyMenus = document.querySelectorAll('.county-menu')
-    countyMenus.forEach(menu => writeDropdowns(menu))
+    countyMenus.forEach(menu => generateDropdowns(menu))
 }
 
 function generatePageData(week) {
