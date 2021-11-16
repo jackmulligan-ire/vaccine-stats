@@ -1,9 +1,11 @@
 const ageDataCells = document.querySelectorAll('.age-data');
 const percentageItem = document.getElementById('percentage-item');
 const numberItem = document.getElementById('number-item');
-let dataFeatures, selectedWeekAttributes;
-let xmlhttp = new XMLHttpRequest();
+let dataFeatures, countyFeatures, selectedWeekAttributes;
+let xmlhttp = new XMLHttpRequest; 
+let county_xmlhttp = new XMLHttpRequest();
 let url = "https://services-eu1.arcgis.com/z6bHNio59iTqqSUY/arcgis/rest/services/COVID19_Weekly_Vaccination_Figures/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
+let county_url = "https://services1.arcgis.com/eNO7HHeQ3rUcBllm/arcgis/rest/services/Covid19CountyStatisticsHPSCIrelandOpenData/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json"
 
 xmlhttp.onreadystatechange = () => {
     if (xmlhttp.readyState === 4 && xmlhttp.status == 200) {
@@ -14,8 +16,17 @@ xmlhttp.onreadystatechange = () => {
         generatePageData(currentWeek)
     }
 };
+
+county_xmlhttp.onreadystatechange = () => {
+    if (county_xmlhttp.readyState === 4 && county_xmlhttp.status == 200) {
+        let countyJSON = JSON.parse(county_xmlhttp.responseText);
+        countyFeatures = countyJSON.features;
+    }
+}
 xmlhttp.open("GET", url, true)
 xmlhttp.send()
+county_xmlhttp.open("GET", county_url, true)
+county_xmlhttp.send()
 
 // CITATION: https://javascript.info/arrow-functions-basics, https://www.theodinproject.com/paths/foundations/courses/foundations/lessons/dom-manipulation
 percentageItem.addEventListener('click', () => getPercAgeStats(selectedWeekAttributes))
