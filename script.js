@@ -2,14 +2,14 @@ const ageDataCells = document.querySelectorAll('.age-data');
 const percentageItem = document.getElementById('percentage-item');
 const numberItem = document.getElementById('number-item');
 let vaccineFeatures, countyFeatures, selectedWeekAttributes;
-let vaccine_xmlhttp = new XMLHttpRequest(); 
-let county_xmlhttp = new XMLHttpRequest();
-let vaccine_url = "https://services-eu1.arcgis.com/z6bHNio59iTqqSUY/arcgis/rest/services/COVID19_Weekly_Vaccination_Figures/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
-let county_url = "https://services1.arcgis.com/eNO7HHeQ3rUcBllm/arcgis/rest/services/Covid19CountyStatisticsHPSCIrelandOpenData/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json"
+let vaccineXMLHttp = new XMLHttpRequest(); 
+let countyXMLHttp = new XMLHttpRequest();
+let vaccineURL = "https://services-eu1.arcgis.com/z6bHNio59iTqqSUY/arcgis/rest/services/COVID19_Weekly_Vaccination_Figures/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
+let countyURL = "https://services1.arcgis.com/eNO7HHeQ3rUcBllm/arcgis/rest/services/Covid19CountyStatisticsHPSCIrelandOpenData/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
 
-vaccine_xmlhttp.onreadystatechange = () => {
-    if (vaccine_xmlhttp.readyState === 4 && vaccine_xmlhttp.status == 200) {
-        let myJSON = JSON.parse(vaccine_xmlhttp.responseText);
+vaccineXMLHttp.onreadystatechange = () => {
+    if (vaccineXMLHttp.readyState === 4 && vaccineXMLHttp.status == 200) {
+        let myJSON = JSON.parse(vaccineXMLHttp.responseText);
         vaccineFeatures = myJSON.features;
         let currentWeek = vaccineFeatures.length-1;
         populateWeeks(currentWeek)
@@ -17,16 +17,18 @@ vaccine_xmlhttp.onreadystatechange = () => {
     }
 };
 
-county_xmlhttp.onreadystatechange = () => {
-    if (county_xmlhttp.readyState === 4 && county_xmlhttp.status == 200) {
-        let countyJSON = JSON.parse(county_xmlhttp.responseText);
+countyXMLHttp.onreadystatechange = () => {
+    if (countyXMLHttp.readyState === 4 && countyXMLHttp.status == 200) {
+        let countyJSON = JSON.parse(countyXMLHttp.responseText);
         countyFeatures = countyJSON.features;
+        //Call populateCounties with countyFeatures
+        populateCounties(countyFeatures)
     }
-}
-vaccine_xmlhttp.open("GET", vaccine_url, true)
-vaccine_xmlhttp.send()
-county_xmlhttp.open("GET", county_url, true)
-county_xmlhttp.send()
+};
+vaccineXMLHttp.open("GET", vaccineURL, true)
+vaccineXMLHttp.send()
+countyXMLHttp.open("GET", countyURL, true)
+countyXMLHttp.send()
 
 // CITATION: https://javascript.info/arrow-functions-basics, https://www.theodinproject.com/paths/foundations/courses/foundations/lessons/dom-manipulation
 percentageItem.addEventListener('click', () => getPercAgeStats(selectedWeekAttributes))
@@ -61,6 +63,19 @@ function populateWeeks(currentWeek) {
         itemElem.addEventListener('click', () => generatePageData(i))
         weekMenuElem.appendChild(itemElem)
     }
+}
+
+function populateCounties(features) {    
+    function writeDropdowns(menuElem) {
+        for (let i=0; i < 26; i++) {  // i set manually to 26 due to county data sometimes being doubled up by HSE
+            let countyNameElem = document.createElement('div');
+            countyNameElem.classList.add('dropdown-item');
+            countyNameElem.textContent = features[i]["attributes"]["CountyName"];
+            menuElem.appendChild(countyNameElem);
+        }
+    }   
+    const countyMenus = document.querySelectorAll('.county-menu')
+    countyMenus.forEach(menu => writeDropdowns(menu))
 }
 
 function generatePageData(week) {
