@@ -21,7 +21,6 @@ countyXMLHttp.onreadystatechange = () => {
     if (countyXMLHttp.readyState === 4 && countyXMLHttp.status == 200) {
         let countyJSON = JSON.parse(countyXMLHttp.responseText);
         countyFeatures = countyJSON.features;
-        //Call populateCounties with countyFeatures
         populateCounties(countyFeatures)
     }
 };
