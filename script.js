@@ -1,17 +1,17 @@
 const ageDataCells = document.querySelectorAll('.age-data');
 const percentageItem = document.getElementById('percentage-item');
 const numberItem = document.getElementById('number-item');
-let dataFeatures, countyFeatures, selectedWeekAttributes;
-let xmlhttp = new XMLHttpRequest; 
+let vaccineFeatures, countyFeatures, selectedWeekAttributes;
+let vaccine_xmlhttp = new XMLHttpRequest(); 
 let county_xmlhttp = new XMLHttpRequest();
-let url = "https://services-eu1.arcgis.com/z6bHNio59iTqqSUY/arcgis/rest/services/COVID19_Weekly_Vaccination_Figures/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
+let vaccine_url = "https://services-eu1.arcgis.com/z6bHNio59iTqqSUY/arcgis/rest/services/COVID19_Weekly_Vaccination_Figures/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
 let county_url = "https://services1.arcgis.com/eNO7HHeQ3rUcBllm/arcgis/rest/services/Covid19CountyStatisticsHPSCIrelandOpenData/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json"
 
-xmlhttp.onreadystatechange = () => {
-    if (xmlhttp.readyState === 4 && xmlhttp.status == 200) {
-        let myJSON = JSON.parse(xmlhttp.responseText);
-        dataFeatures = myJSON.features;
-        let currentWeek = dataFeatures.length-1;
+vaccine_xmlhttp.onreadystatechange = () => {
+    if (vaccine_xmlhttp.readyState === 4 && vaccine_xmlhttp.status == 200) {
+        let myJSON = JSON.parse(vaccine_xmlhttp.responseText);
+        vaccineFeatures = myJSON.features;
+        let currentWeek = vaccineFeatures.length-1;
         populateWeeks(currentWeek)
         generatePageData(currentWeek)
     }
@@ -23,8 +23,8 @@ county_xmlhttp.onreadystatechange = () => {
         countyFeatures = countyJSON.features;
     }
 }
-xmlhttp.open("GET", url, true)
-xmlhttp.send()
+vaccine_xmlhttp.open("GET", vaccine_url, true)
+vaccine_xmlhttp.send()
 county_xmlhttp.open("GET", county_url, true)
 county_xmlhttp.send()
 
@@ -84,7 +84,7 @@ function generatePageData(week) {
 
         for (let i=0; i < manuKeys.length; i++) {manuDataCells[i].innerHTML = attributes[manuKeys[i]];}
     }
-    selectedWeekAttributes = dataFeatures[week].attributes;
+    selectedWeekAttributes = vaccineFeatures[week].attributes;
     getTotalVaccinated(selectedWeekAttributes)
     getWeeklyVaccinated(selectedWeekAttributes)
     getManufacturerTable(selectedWeekAttributes)
