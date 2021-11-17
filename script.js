@@ -64,22 +64,22 @@ function populateWeeks(currentWeek) {
     }
 }
 
-function populateCounties(features) {    
-    function generateDropdowns(menuElem) {
+function populateCounties(features) {
+    function generateDropdowns(menuElem, elemIndex) {
         for (let i=0; i < 26; i++) {  // i set manually to 26 due to county data sometimes being doubled up by HSE
             let countyNameElem = document.createElement('div');
             countyNameElem.classList.add('dropdown-item');
             let countyName = features[i]["attributes"]["CountyName"];
             countyNameElem.textContent = countyName;
-            countyNameElem.addEventListener('click', () => generateCountyCard(countyName))
+            countyNameElem.addEventListener('click', () => generateCountyCard(countyName, elemIndex))
             menuElem.appendChild(countyNameElem);
         }
     }   
     const countyMenus = document.querySelectorAll('.county-menu')
-    countyMenus.forEach(menu => generateDropdowns(menu))
+    countyMenus.forEach((menu, index) => generateDropdowns(menu, index))
 }
 
-function generateCountyCard(countyName) {
+function generateCountyCard(countyName, menuIndex) {
     function getCountyData(countyName) {
         for(let i=0; i < countyFeatures.length; i++) {
             if (countyFeatures[i]["attributes"]["CountyName"] === countyName) {
@@ -111,10 +111,10 @@ function generateCountyCard(countyName) {
         cardDiv.appendChild(cardBody);
         return cardDiv
     }
-    const cardSlotElem = document.getElementById('card-slot');
+    const cardSlotElems = document.querySelectorAll('.card-slot');
     let countyData = getCountyData(countyName);
-    let countyCard = createCountyCard(countyName, countyData)
-    cardSlotElem.appendChild(countyCard)
+    let countyCard = createCountyCard(countyName, countyData);
+    cardSlotElems[menuIndex].appendChild(countyCard)
 }
 
 function generatePageData(week) {
