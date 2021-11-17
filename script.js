@@ -114,6 +114,7 @@ function generateCountyCard(countyName, menuIndex) {
     const cardSlotElems = document.querySelectorAll('.card-slot');
     let countyData = getCountyData(countyName);
     let countyCard = createCountyCard(countyName, countyData);
+    //CITATION: https://stackoverflow.com/questions/39103756/check-if-any-element-in-a-nodelist-has-a-specific-class-using-es6
     if (cardSlotElems[menuIndex].querySelector(".card") != null) {
         let existingCard = cardSlotElems[menuIndex].querySelector(".card");
         cardSlotElems[menuIndex].removeChild(existingCard);
