@@ -114,6 +114,10 @@ function generateCountyCard(countyName, menuIndex) {
     const cardSlotElems = document.querySelectorAll('.card-slot');
     let countyData = getCountyData(countyName);
     let countyCard = createCountyCard(countyName, countyData);
+    if (cardSlotElems[menuIndex].querySelector(".card") != null) {
+        let existingCard = cardSlotElems[menuIndex].querySelector(".card");
+        cardSlotElems[menuIndex].removeChild(existingCard);
+    }
     cardSlotElems[menuIndex].appendChild(countyCard)
 }
 
