@@ -22,6 +22,8 @@ countyXMLHttp.onreadystatechange = () => {
         let countyJSON = JSON.parse(countyXMLHttp.responseText);
         countyFeatures = countyJSON.features;
         populateCounties(countyFeatures)
+        //REMOVE THIS
+        generateCountyCard("Dublin");
     }
 };
 vaccineXMLHttp.open("GET", vaccineURL, true)
@@ -75,6 +77,44 @@ function populateCounties(features) {
     }   
     const countyMenus = document.querySelectorAll('.county-menu')
     countyMenus.forEach(menu => generateDropdowns(menu))
+}
+
+function generateCountyCard(countyName) {
+    function getCountyData(countyName) {
+        for(let i=0; i < countyFeatures.length; i++) {
+            if (countyFeatures[i]["attributes"]["CountyName"] === countyName) {
+                let populationValue = countyFeatures[i]["attributes"]["PopulationCensus16"];
+                let confirmedValue = countyFeatures[i]["attributes"]["ConfirmedCovidCases"];
+                let proportionValue = countyFeatures[i]["attributes"]["PopulationProportionCovidCases"].toFixed(2);
+                return [populationValue, confirmedValue, proportionValue]
+            }
+        } 
+    }  
+    function createCountyCard(countyName, dataArray) {
+        const textContents = ["Population", "Cases", "Cases per 100000"];
+        let cardDiv = document.createElement('div');
+        let cardHeader = document.createElement('h5');
+        let cardBody = document.createElement('div');
+        let pElem;
+        
+        cardDiv.classList.add('card')
+        cardHeader.classList.add('card-header')
+        cardHeader.textContent = countyName;
+        cardDiv.appendChild(cardHeader)
+        cardBody.classList.add("card-body");
+        for (let i=0; i < dataArray.length; i++) {
+            pElem = document.createElement('p');
+            pElem.classList.add('card-text')
+            pElem.textContent = `${textContents[i]}: ${dataArray[i]}`;
+            cardBody.appendChild(pElem)
+        }
+        cardDiv.appendChild(cardBody);
+        return cardDiv
+    }
+    const cardSlotElem = document.getElementById('card-slot');
+    let countyData = getCountyData(countyName);
+    let countyCard = createCountyCard(countyName, countyData)
+    cardSlotElem.appendChild(countyCard)
 }
 
 function generatePageData(week) {
