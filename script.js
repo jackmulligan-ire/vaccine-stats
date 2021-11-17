@@ -22,8 +22,6 @@ countyXMLHttp.onreadystatechange = () => {
         let countyJSON = JSON.parse(countyXMLHttp.responseText);
         countyFeatures = countyJSON.features;
         populateCounties(countyFeatures)
-        //REMOVE THIS
-        generateCountyCard("Dublin");
     }
 };
 vaccineXMLHttp.open("GET", vaccineURL, true)
@@ -71,7 +69,9 @@ function populateCounties(features) {
         for (let i=0; i < 26; i++) {  // i set manually to 26 due to county data sometimes being doubled up by HSE
             let countyNameElem = document.createElement('div');
             countyNameElem.classList.add('dropdown-item');
-            countyNameElem.textContent = features[i]["attributes"]["CountyName"];
+            let countyName = features[i]["attributes"]["CountyName"];
+            countyNameElem.textContent = countyName;
+            countyNameElem.addEventListener('click', () => generateCountyCard(countyName))
             menuElem.appendChild(countyNameElem);
         }
     }   
