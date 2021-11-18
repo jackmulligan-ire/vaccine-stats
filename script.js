@@ -143,19 +143,18 @@ function generateProportionCards(features) {
         cardDiv.appendChild(bodyDiv)
         cardSlot.appendChild(cardDiv)
     }
-
+    
     let countyPropObj = {};
-    let proportionData = [];
     for (let i = 0; i < features.length; i++) {
         let countyName = features[i]["attributes"]["CountyName"];
         let proportionValue = features[i]["attributes"]["PopulationProportionCovidCases"];
         //CITATION: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#objects_and_properties
         countyPropObj[countyName] = proportionValue;
-        proportionData.push(proportionValue)
     }
     //CITATION: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max#getting_the_maximum_element_of_an_array
-    let highestPropVal = Math.max(...proportionData);
-    let lowestPropVal = Math.min(...proportionData);
+    //CITATION: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values
+    let highestPropVal = Math.max(...Object.values(countyPropObj));
+    let lowestPropVal = Math.min(...Object.values(countyPropObj));
     //CITATION: https://stackoverflow.com/questions/9907419/how-to-get-a-key-in-a-javascript-object-by-its-value
     let highestCounty = Object.keys(countyPropObj).find(key => countyPropObj[key] === highestPropVal);
     let lowestCounty = Object.keys(countyPropObj).find(key => countyPropObj[key] === lowestPropVal);
