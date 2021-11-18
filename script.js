@@ -22,7 +22,7 @@ countyXMLHttp.onreadystatechange = () => {
         let countyJSON = JSON.parse(countyXMLHttp.responseText);
         countyFeatures = countyJSON.features;
         populateCounties(countyFeatures)
-        getHighestProportion(countyFeatures)
+        generateProportionCards(countyFeatures)
     }
 };
 vaccineXMLHttp.open("GET", vaccineURL, true)
@@ -123,7 +123,27 @@ function generateCountyCard(countyName, menuIndex) {
     cardSlotElems[menuIndex].appendChild(countyCard)
 }
 
-function getHighestProportion(features) {
+function generateProportionCards(features) {
+    function createCard(county, value, bgColour, slotName) {
+        const cardSlot = document.getElementById(slotName);
+        let cardDiv = document.createElement('div');
+        let cardHeader = document.createElement('h5');
+        let bodyDiv = document.createElement('div');
+        let cardPara = document.createElement('p');
+        
+        cardDiv.classList.add('card')
+        cardHeader.classList.add('card-header')
+        cardHeader.classList.add(bgColour)
+        bodyDiv.classList.add('card-body')
+        cardPara.classList.add('card-text')
+        cardHeader.textContent = county
+        cardPara.textContent = `Cases per 100000: ${value.toFixed(2)}`
+        bodyDiv.appendChild(cardPara)
+        cardDiv.appendChild(cardHeader)
+        cardDiv.appendChild(bodyDiv)
+        cardSlot.appendChild(cardDiv)
+    }
+
     let countyPropObj = {};
     let proportionData = [];
     for (let i = 0; i < features.length; i++) {
@@ -139,10 +159,9 @@ function getHighestProportion(features) {
     //CITATION: https://stackoverflow.com/questions/9907419/how-to-get-a-key-in-a-javascript-object-by-its-value
     let highestCounty = Object.keys(countyPropObj).find(key => countyPropObj[key] === highestPropVal);
     let lowestCounty = Object.keys(countyPropObj).find(key => countyPropObj[key] === lowestPropVal);
-    console.log(`Highest: ${highestCounty} ${highestPropVal.toFixed(2)}`)
-    console.log(`Lowest: ${lowestCounty} ${lowestPropVal.toFixed(2)}`)
+    createCard(highestCounty, highestPropVal, "bg-danger", "highest")
+    createCard(lowestCounty, lowestPropVal, "bg-success", "lowest")
 }
-
 
 function generatePageData(week) {
     function getTotalVaccinated(attributes) {
