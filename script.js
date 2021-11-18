@@ -53,7 +53,8 @@ function getPercAgeStats(attributes) {
 
 function populateWeeks(currentWeek) {
     const weekMenuElem = document.getElementById('week-menu');
-
+    const weekButton = document.getElementById('week-menu-button');
+    
     for (let i = currentWeek; i >= 1; i--) {
         //CITATION: https://www.theodinproject.com/paths/foundations/courses/foundations/lessons/dom-manipulation
         let itemElem = document.createElement('div');
@@ -61,8 +62,10 @@ function populateWeeks(currentWeek) {
         itemElem.textContent = i;
         // CITATION: https://javascript.info/arrow-functions-basics
         itemElem.addEventListener('click', () => generatePageData(i))
+        itemElem.addEventListener('click', () => weekButton.textContent = `Week ${i}`)
         weekMenuElem.appendChild(itemElem)
     }
+    weekButton.textContent = `Week ${currentWeek}`;
 }
 
 function populateCounties(features) {
