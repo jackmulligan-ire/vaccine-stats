@@ -54,7 +54,7 @@ function getPercAgeStats(attributes) {
 function populateWeeks(currentWeek) {
     const weekMenuElem = document.getElementById('week-menu');
 
-    for (let i=1; i <= currentWeek; i++) {
+    for (let i = currentWeek; i >= 1; i--) {
         //CITATION: https://www.theodinproject.com/paths/foundations/courses/foundations/lessons/dom-manipulation
         let itemElem = document.createElement('div');
         itemElem.classList.add('dropdown-item')
