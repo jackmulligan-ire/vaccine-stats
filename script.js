@@ -13,7 +13,7 @@ vaccineXMLHttp.onreadystatechange = () => {
         vaccineFeatures = myJSON.features;
         let currentWeek = vaccineFeatures.length-1;
         populateWeeks(currentWeek)
-        generatePageData(currentWeek)
+        generateVaccineData(currentWeek)
     }
 };
 
@@ -61,7 +61,7 @@ function populateWeeks(currentWeek) {
         itemElem.classList.add('dropdown-item')
         itemElem.textContent = i;
         // CITATION: https://javascript.info/arrow-functions-basics
-        itemElem.addEventListener('click', () => generatePageData(i))
+        itemElem.addEventListener('click', () => generateVaccineData(i))
         itemElem.addEventListener('click', () => weekButton.textContent = `Week ${i}`)
         weekMenuElem.appendChild(itemElem)
     }
@@ -165,25 +165,22 @@ function generateProportionCards(features) {
     createCard(lowestCounty, lowestPropVal, "bg-success", "lowest")
 }
 
-function generatePageData(week) {
+function generateVaccineData(week) {
     function getTotalVaccinated(attributes) {
         const totalVaccinatedElem = document.getElementById('total-vaccines');
         let totalVaccinated = attributes.FullyCum_Age10to19 + attributes.FullyCum_Age20to29 + 
             attributes.FullyCum_Age30to39 + attributes.FullyCum_Age40to49 + attributes.FullyCum_Age50to59 + 
             attributes.FullyCum_Age60to69 + attributes.FullyCum_Age70to79 + attributes.FullyCum_80_ + attributes.FullyCum_NA;
-        
         totalVaccinatedElem.textContent = totalVaccinated;
     }
     function getWeeklyVaccinated(attributes) {
         const weeklyVaccinatedElem = document.getElementById('weekly-vaccines');
         let weeklyVaccinated = attributes.TotalweeklyVaccines;
-        
         weeklyVaccinatedElem.textContent = weeklyVaccinated;
     }
     function getManufacturerTable(attributes) {
         const manuKeys = ['Moderna', 'Pfizer', 'Janssen', 'AstraZeneca'];
         const manuDataCells = document.querySelectorAll('.manu-data');
-
         for (let i=0; i < manuKeys.length; i++) {manuDataCells[i].innerHTML = attributes[manuKeys[i]];}
     }
     selectedWeekAttributes = vaccineFeatures[week].attributes;
