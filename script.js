@@ -1,38 +1,32 @@
 const ageDataCells = document.querySelectorAll('.age-data');
 const percentageItem = document.getElementById('percentage-item');
 const numberItem = document.getElementById('number-item');
+
 let vaccineFeatures, countyFeatures, selectedWeekAttributes;
-let vaccineXMLHttp = new XMLHttpRequest(); 
-let countyXMLHttp = new XMLHttpRequest();
 let vaccineURL = "https://services-eu1.arcgis.com/z6bHNio59iTqqSUY/arcgis/rest/services/COVID19_Weekly_Vaccination_Figures/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
 let countyURL = "https://services1.arcgis.com/eNO7HHeQ3rUcBllm/arcgis/rest/services/Covid19CountyStatisticsHPSCIrelandOpenData/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
 
-vaccineXMLHttp.onreadystatechange = () => {
-    if (vaccineXMLHttp.readyState === 4 && vaccineXMLHttp.status == 200) {
-        let myJSON = JSON.parse(vaccineXMLHttp.responseText);
-        vaccineFeatures = myJSON.features;
-        let currentWeek = vaccineFeatures.length-1;
-        populateWeeks(currentWeek)
-        generateVaccineData(currentWeek)
-    }
-};
+getData(countyURL).then(features => {
+    countyFeatures = features;
+    populateCounties(countyFeatures)
+    generateProportionCards(countyFeatures)
+})
 
-countyXMLHttp.onreadystatechange = () => {
-    if (countyXMLHttp.readyState === 4 && countyXMLHttp.status == 200) {
-        let countyJSON = JSON.parse(countyXMLHttp.responseText);
-        countyFeatures = countyJSON.features;
-        populateCounties(countyFeatures)
-        generateProportionCards(countyFeatures)
-    }
-};
-vaccineXMLHttp.open("GET", vaccineURL, true)
-vaccineXMLHttp.send()
-countyXMLHttp.open("GET", countyURL, true)
-countyXMLHttp.send()
+getData(vaccineURL).then(features => {
+    vaccineFeatures = features;
+    let currentWeek = vaccineFeatures.length-1;
+    populateWeeks(currentWeek)
+    generateVaccineData(currentWeek)
+})
 
-// CITATION: https://javascript.info/arrow-functions-basics, https://www.theodinproject.com/paths/foundations/courses/foundations/lessons/dom-manipulation
 percentageItem.addEventListener('click', () => getPercAgeStats(selectedWeekAttributes))
 numberItem.addEventListener('click', () => getTotalAgeStats(selectedWeekAttributes))
+
+async function getData(url) {
+    const response = await fetch(url, {mode: 'cors'});
+    const JSON = await response.json();
+    return JSON.features;
+}
 
 function getTotalAgeStats(attributes) {
     const totalAgeKeys = ["FullyCum_Age10to19", "FullyCum_Age20to29", "FullyCum_Age30to39", "FullyCum_Age40to49", 
@@ -56,11 +50,9 @@ function populateWeeks(currentWeek) {
     const weekButton = document.getElementById('week-menu-button');
     
     for (let i = currentWeek; i >= 1; i--) {
-        //CITATION: https://www.theodinproject.com/paths/foundations/courses/foundations/lessons/dom-manipulation
         let itemElem = document.createElement('div');
         itemElem.classList.add('dropdown-item')
         itemElem.textContent = i;
-        // CITATION: https://javascript.info/arrow-functions-basics
         itemElem.addEventListener('click', () => generateVaccineData(i))
         itemElem.addEventListener('click', () => weekButton.textContent = `Week ${i}`)
         weekMenuElem.appendChild(itemElem)
@@ -118,7 +110,6 @@ function generateCountyCard(countyName, menuIndex) {
     const cardSlotElems = document.querySelectorAll('.card-slot');
     let countyData = getCountyData(countyName);
     let countyCard = createCountyCard(countyName, countyData);
-    //CITATION: https://stackoverflow.com/questions/39103756/check-if-any-element-in-a-nodelist-has-a-specific-class-using-es6
     if (cardSlotElems[menuIndex].querySelector(".card") != null) {
         let existingCard = cardSlotElems[menuIndex].querySelector(".card");
         cardSlotElems[menuIndex].removeChild(existingCard);
@@ -151,14 +142,10 @@ function generateProportionCards(features) {
     for (let i = 0; i < features.length; i++) {
         let countyName = features[i]["attributes"]["CountyName"];
         let proportionValue = features[i]["attributes"]["PopulationProportionCovidCases"];
-        //CITATION: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#objects_and_properties
         countyPropObj[countyName] = proportionValue;
     }
-    //CITATION: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max#getting_the_maximum_element_of_an_array
-    //CITATION: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values
     let highestPropVal = Math.max(...Object.values(countyPropObj));
     let lowestPropVal = Math.min(...Object.values(countyPropObj));
-    //CITATION: https://stackoverflow.com/questions/9907419/how-to-get-a-key-in-a-javascript-object-by-its-value
     let highestCounty = Object.keys(countyPropObj).find(key => countyPropObj[key] === highestPropVal);
     let lowestCounty = Object.keys(countyPropObj).find(key => countyPropObj[key] === lowestPropVal);
     createCard(highestCounty, highestPropVal, "bg-danger", "highest")
