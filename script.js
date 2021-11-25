@@ -23,9 +23,49 @@ percentageItem.addEventListener('click', () => getPercAgeStats(selectedWeekAttri
 numberItem.addEventListener('click', () => getTotalAgeStats(selectedWeekAttributes))
 
 async function getData(url) {
+    try {
     const response = await fetch(url, {mode: 'cors'});
+    if (!response.ok) {
+        throw Error(response.statusText);
+    }
     const JSON = await response.json();
     return JSON.features;
+    } catch (error) { 
+        console.log(`Error: ${error}`)
+        displayErrorMessage()
+    }
+}
+function displayErrorMessage() {
+    function createErrorCard() {
+        let rowDiv = document.createElement('div');
+        let colDiv = document.createElement('div');
+        let cardDiv = document.createElement('div');
+        let cardBody = document.createElement('div');
+        let cardHeader = document.createElement('h5');
+        let cardContent = document.createElement('p');
+        
+        rowDiv.classList.add("row", "justify-content-center", "mt-5")
+        colDiv.classList.add("col-lg-6")
+        cardDiv.classList.add("card")
+        cardHeader.classList.add("card-header", "bg-danger")
+        cardBody.classList.add("card-body")
+        cardContent.classList.add("card-text")
+        cardHeader.textContent = "Error";
+        cardContent.textContent = "There was an error retrieving the data. Please try again later."
+        cardDiv.appendChild(cardHeader)
+        cardBody.appendChild(cardContent)
+        cardDiv.appendChild(cardBody)
+        colDiv.appendChild(cardDiv)
+        rowDiv.appendChild(colDiv)
+        containerDiv.appendChild(rowDiv)
+    }
+    function removeSections() {
+        let containerChildren = containerDiv.childNodes;
+        while (containerChildren.length > 0) containerChildren.forEach(child => containerDiv.removeChild(child));
+    }
+    const containerDiv = document.getElementsByClassName("container")[0];
+    removeSections()
+    createErrorCard()
 }
 
 function getTotalAgeStats(attributes) {
