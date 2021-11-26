@@ -147,6 +147,18 @@ function generateCountyCard(countyName, menuIndex) {
         cardDiv.appendChild(cardBody);
         return cardDiv
     }
+    function addCloseIcon(menuIndex) {
+        const cardElem = cardSlotElems[menuIndex].querySelector(".card");
+        const cardHeader = cardElem.querySelector("h5");
+        let closeButton = document.createElement("button");
+        let closeIcon = document.createElement("span");
+        
+        closeButton.classList.add("close");
+        closeIcon.textContent = "x";
+        closeButton.appendChild(closeIcon)
+        closeButton.addEventListener('click', () => cardSlotElems[menuIndex].removeChild(cardElem))
+        cardHeader.appendChild(closeButton)
+    }
     const cardSlotElems = document.querySelectorAll('.card-slot');
     let countyData = getCountyData(countyName);
     let countyCard = createCountyCard(countyName, countyData);
@@ -155,6 +167,7 @@ function generateCountyCard(countyName, menuIndex) {
         cardSlotElems[menuIndex].removeChild(existingCard);
     }
     cardSlotElems[menuIndex].appendChild(countyCard)
+    addCloseIcon(menuIndex);
 }
 
 function generateProportionCards(features) {
