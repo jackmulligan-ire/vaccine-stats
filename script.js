@@ -5,6 +5,7 @@ const numberItem = document.getElementById('number-item');
 let vaccineFeatures, countyFeatures, selectedWeekAttributes;
 let vaccineURL = "https://services-eu1.arcgis.com/z6bHNio59iTqqSUY/arcgis/rest/services/COVID19_Weekly_Vaccination_Figures/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
 let countyURL = "https://services1.arcgis.com/eNO7HHeQ3rUcBllm/arcgis/rest/services/Covid19CountyStatisticsHPSCIrelandOpenData/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
+let countiesOnPage = [];
 
 getData(countyURL).then(features => {
     countyFeatures = features;
@@ -147,7 +148,7 @@ function generateCountyCard(countyName, menuIndex) {
         cardDiv.appendChild(cardBody);
         return cardDiv
     }
-    function addCloseIcon(menuIndex) {
+    function addCloseIcon(menuIndex, countyName) {
         const cardElem = cardSlotElems[menuIndex].querySelector(".card");
         const cardHeader = cardElem.querySelector("h5");
         let closeButton = document.createElement("button");
@@ -156,18 +157,28 @@ function generateCountyCard(countyName, menuIndex) {
         closeButton.classList.add("close");
         closeIcon.textContent = "x";
         closeButton.appendChild(closeIcon)
-        closeButton.addEventListener('click', () => cardSlotElems[menuIndex].removeChild(cardElem))
+        closeButton.addEventListener('click', () => {
+            cardSlotElems[menuIndex].removeChild(cardElem)
+            let index = countiesOnPage.indexOf(countyName);
+            countiesOnPage.splice(index, 1)
+        }) 
         cardHeader.appendChild(closeButton)
     }
     const cardSlotElems = document.querySelectorAll('.card-slot');
-    let countyData = getCountyData(countyName);
-    let countyCard = createCountyCard(countyName, countyData);
-    if (cardSlotElems[menuIndex].querySelector(".card") != null) {
-        let existingCard = cardSlotElems[menuIndex].querySelector(".card");
-        cardSlotElems[menuIndex].removeChild(existingCard);
+    if (!countiesOnPage.includes(countyName)) {
+        if (cardSlotElems[menuIndex].querySelector(".card") != null) {
+            let existingCard = cardSlotElems[menuIndex].querySelector(".card");
+            let existingCounty = existingCard.querySelector("h5").textContent.replace('x', '');
+            cardSlotElems[menuIndex].removeChild(existingCard);
+            let index = countiesOnPage.indexOf(existingCounty);
+            countiesOnPage.splice(index, 1)
+        }
+        countiesOnPage.push(countyName)
+        let countyData = getCountyData(countyName);
+        let countyCard = createCountyCard(countyName, countyData);
+        cardSlotElems[menuIndex].appendChild(countyCard)
+        addCloseIcon(menuIndex, countyName);
     }
-    cardSlotElems[menuIndex].appendChild(countyCard)
-    addCloseIcon(menuIndex);
 }
 
 function generateProportionCards(features) {
