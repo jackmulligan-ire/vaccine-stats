@@ -32,95 +32,31 @@
         </div>
     </nav>
     <main class="container">
-        <section id="week-selector" class="mt-2">
-            <div class="row justify-content-end">
-                <div class="col-4 d-flex justify-content-center">
+        <section id="total" class="mt-2">
+            <div class="row align-items-center border-bottom">
+                <div class="col-10">
+                    <h2 class="p-2 display-4">Vaccines</h2>
+                </div>
+                <div class="col-2 d-flex justify-content-center">
                     <div class="dropdown">
                         <button class="btn btn-secondary btn-lg dropdown-toggle" id="week-menu-button" type="button" data-toggle="dropdown"></button>
                         <div class="dropdown-menu overflow-auto" id="week-menu"></div>
                     </div>
                 </div>
             </div>
-        </section> 
-        <section id="total" class="mt-2">
-            <div class="row">
-                <div class="col-lg-6">
-                    <h2 class="text-center text-md-left">Total Fully Vaccinated</h2>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-4">
-                    <h4 class="display-4 m-auto text-center" id="total-vaccines"></h4>
-                </div>
-            </div>
-        </section>
-        <section id="weekly-stats" class="mt-5">
-            <div class="row">
-                <div class="col-lg-6">
-                    <h2 class="text-center text-md-left">Weekly Vaccines Administered</h2>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-4">
-                    <h4 class="display-4 text-center m-auto" id="weekly-vaccines"></h4>
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col-lg-6">
-                    <h3 class="text-center text-md-left">By Vaccine Manufacturer</h3>
-                </div>
-            </div>
-            <div class="row justify-content-center mt-4">
-                <div class="col-md-6">
-                    <table class="table text-center">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Manufacturer</th>
-                                <th scope="col">No. of Vaccines</th>
-                            </tr>
-                        </thead>
-                        <tbody id="manufacturer-table-body">
-                            <tr>
-                                <td>Moderna</td>
-                                <td class="manu-data"></td>
-                            </tr>
-                            <tr>
-                                <td>Pfizer</td>
-                                <td class="manu-data"></td>
-                            </tr>
-                            <tr>
-                                <td>Janssen</td>
-                                <td class="manu-data"></td>
-                            </tr>
-                            <tr>
-                                <td>AstraZeneca</td>
-                                <td class="manu-data"></td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-        <section id="age-stats" class="mt-5">
-            <div class="row">
-                <div class="col-lg-6">
-                    <h2 class="text-center text-md-left">Fully Vaccinated per Age Group</h2>
-                </div>
-            </div>
-            <div class="row mt-2 justify-content-end">
-                <div class="col-3 d-flex justify-content-center mr-lg-4"> 
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">View as</button>
-                        <div class="dropdown-menu">
-                            <div class="dropdown-item" id="number-item">Number</div>
-                            <div class="dropdown-item" id="percentage-item">Percentage</div>
+            <div class="row justify-content-center mt-2">
+                <div class="col-md-8">
+                    <div class="card">
+                        <h3 class="card-header text-center border-0">Total Fully Vaccinated</h3>
+                        <div class="card-body">
+                            <h4 class="display-4 text-center" id="total-vaccines"></h4>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row justify-content-center mt-3">
-                <div class="col-md-6">
+            <div class="row mt-3">
+                <div class="col-3"></div>
+                <div class="col-6">
                     <table class="table text-center">
                         <thead class="thead-dark">
                             <tr>
@@ -161,6 +97,63 @@
                                 <td scope="row">80+</td>
                                 <td class="age-data"></td>
                             </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-3 d-flex justify-content-end"> 
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown">View as</button>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item" id="number-item">Number</div>
+                            <div class="dropdown-item" id="percentage-item">Percentage</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <h3 class="card-header text-center border-0">Weekly Vaccines Administered</h3>
+                        <div class="card-body">
+                            <h4 class="display-4 text-center" id="weekly-vaccines"></h4>
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-4">
+                    
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-6">
+                    <table class="table text-center">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Manufacturer</th>
+                                <th scope="col">No. of Vaccines</th>
+                            </tr>
+                        </thead>
+                        <tbody id="manufacturer-table-body">
+                            <tr>
+                                <td>Moderna</td>
+                                <td class="manu-data"></td>
+                            </tr>
+                            <tr>
+                                <td>Pfizer</td>
+                                <td class="manu-data"></td>
+                            </tr>
+                            <tr>
+                                <td>Janssen</td>
+                                <td class="manu-data"></td>
+                            </tr>
+                            <tr>
+                                <td>AstraZeneca</td>
+                                <td class="manu-data"></td>
+                            </tr>
+
                         </tbody>
                     </table>
                 </div>
